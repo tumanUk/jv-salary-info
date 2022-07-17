@@ -14,7 +14,7 @@ public class SalaryInfo {
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
 
         StringBuilder builder = new StringBuilder()
-                .append("Report for period: ")
+                .append("Report for period ")
                 .append(dateFrom)
                 .append(" - ")
                 .append(dateTo)
