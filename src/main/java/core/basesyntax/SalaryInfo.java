@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SalaryInfo {
-    private static final int DATA_TO_CHECK = 0;
-    private static final int NAME = 1;
-    private static final int HOURS = 2;
-    private static final int INCOME_PER_HOUR = 3;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final int DATE_INDEX = 0;
+    private static final int NAME_INDEX = 1;
+    private static final int HOURS_INDEX = 2;
+    private static final int INCOME_PER_HOUR_INDEX = 3;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final String DELIMITER = " ";
 
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
@@ -22,13 +22,13 @@ public class SalaryInfo {
         for (int i = 0; i < names.length; i++) {
             int totalSalaryOfAPerson = 0;
             for (int j = 0; j < data.length; j++) {
-                String[] oneLineOfData = data[j].split(DELIMITER);
-                if (!oneLineOfData[NAME].equals(names[i])) {
+                String[] splittedLine = data[j].split(DELIMITER);
+                if (!splittedLine[NAME_INDEX].equals(names[i])) {
                     continue;
                 }
-                if (isDateRelevant(oneLineOfData[DATA_TO_CHECK], dateFrom, dateTo)) {
-                    totalSalaryOfAPerson += Integer.parseInt(oneLineOfData[HOURS])
-                            * Integer.parseInt(oneLineOfData[INCOME_PER_HOUR]);
+                if (isDateRelevant(splittedLine[DATE_INDEX], dateFrom, dateTo)) {
+                    totalSalaryOfAPerson += Integer.parseInt(splittedLine[HOURS_INDEX])
+                            * Integer.parseInt(splittedLine[INCOME_PER_HOUR_INDEX]);
                 }
             }
             builder.append(names[i]).append(" - ").append(totalSalaryOfAPerson);
@@ -40,9 +40,9 @@ public class SalaryInfo {
     }
 
     private boolean isDateRelevant(String dataToCheck, String dataFrom, String dataTo) {
-        LocalDate timeToCheck = LocalDate.parse(dataToCheck, formatter);
-        LocalDate timeFrom = LocalDate.parse(dataFrom, formatter);
-        LocalDate timeTo = LocalDate.parse(dataTo, formatter);
-        return timeToCheck.compareTo(timeFrom) >= 0 && timeToCheck.compareTo(timeTo) <= 0;
+        LocalDate currentDate = LocalDate.parse(dataToCheck, FORMATTER);
+        LocalDate localDateFrom = LocalDate.parse(dataFrom, FORMATTER);
+        LocalDate localDateTo = LocalDate.parse(dataTo, FORMATTER);
+        return currentDate.compareTo(localDateFrom) >= 0 && currentDate.compareTo(localDateTo) <= 0;
     }
 }
